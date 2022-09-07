@@ -57,7 +57,7 @@ void shell_init(){
         char *arg = strtok(command, " ");
         if(strcmp(command, "")!=0){
             if(strcmp(arg, "help")==0){
-                cprintf("\nhere all commands are output inside in the kernel: \n\n\
+                cputs("\nhere all commands are output inside in the kernel: \n\n\
               help | all commands are output inside to the kernel\n\
 -------------------|---------------------------------------------\n\
             reboot | reboot the computer\n\

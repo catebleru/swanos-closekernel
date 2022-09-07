@@ -121,32 +121,25 @@ void log(char *str, bool ok){
 }
 
 void cprintf(char* format, ...){ 
-    char *traverse; 
-    unsigned int i; 
-    char *s; 
-
     va_list arg; 
     va_start(arg, format); 
-    for(traverse = format; *traverse != '\0'; traverse++){ 
-        while(*traverse != '%'){ 
-            cputch(*traverse);
-            traverse++; 
-        } 
-        traverse++; 
-        switch(*traverse) { 
-            case 'c':
-                i = va_arg(arg, int);
-                cputch(i);
-                break; 
-            case 'd':
-                i = va_arg(arg, int);
-                cputint(i);
-                break; 
-            case 's':
-                s = va_arg(arg, char*);
-                cputs(s); 
-                break; 
-        }   
+    for(int i = 0; format[i]; i++){
+        if(format[i] == '%'){
+            i++;
+            switch(format[i]) { 
+                case 'c':
+                    cputch(va_arg(arg, int));
+                    break; 
+                case 'd':
+                    cputint(va_arg(arg, int));
+                    break; 
+                case 's':
+                    cputs(va_arg(arg, char*)); 
+                    break; 
+            }  
+        } else {
+            cputch(format[i]);
+        }
     } 
     va_end(arg); 
 } 
