@@ -30,6 +30,7 @@ void cputch(char c);
 void cset_color(uint8_t colfg, uint8_t colbg);
 void cputs(char *c);
 void cputint(int i);
+void cputhex(uint32_t i);
 void cbackspace();
 void log(char *str, bool ok);
 void cprintf(char* format, ...);

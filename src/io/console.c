@@ -96,6 +96,24 @@ void cputint(int i){
     cputs(str);
 }
 
+void cputhex(uint32_t i){
+    const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    unsigned int n, d = 0x10000000;
+    cputs("0x");
+    while((i / d == 0) && (d >= 0x10)){
+        d /= 0x10;
+    }
+    n = i;
+
+    while(d >= 0xF){
+        cputch(hex[n / d]);
+        n = n % d;
+        d /= 0x10;
+    }
+
+    cputch(hex[n]);
+}
+
 
 void cbackspace(){
     column -= 1;
@@ -136,6 +154,9 @@ void cprintf(char* format, ...){
                 case 's':
                     cputs(va_arg(arg, char*)); 
                     break; 
+                case 'x':
+                    cputhex(va_arg(arg, uint32_t));
+                    break;
             }  
         } else {
             cputch(format[i]);
