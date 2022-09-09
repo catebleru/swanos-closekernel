@@ -6,8 +6,9 @@
 #include <kernel.h>
 #include <shell.h>
 
-void kernel_main(){
+void kernel_main(struct multiboot_info *mboot_info){
 	cinit();
+	cprintf("Multiboot magic number - %x\n", mboot_info);
 	gdt_init();
 	idt_init();
 	irq_init();

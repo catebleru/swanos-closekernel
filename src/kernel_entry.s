@@ -112,6 +112,9 @@ _start:
     # Set up the stack.
     mov $stack_top, %esp
 
+    push %ebx # Multiboot structure
+	push %eax # Multiboot magic number
+
     call kernel_main
 
     # Infinite loop if the system has nothing more to do.
