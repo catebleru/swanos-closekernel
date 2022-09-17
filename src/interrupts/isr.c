@@ -101,9 +101,29 @@ void fault_handler(struct regs *r){
 	if (handler) {
 		handler(r);
 	} else {
-        log("error isr ", false);
-		cputint(r->int_no);
-		qemu_log("error isr %d\n", r->int_no);
+        log("", false);
+		switch(r->int_no){
+			case 0x0:
+				qemu_log("(%x) Divide-by-zero Error", r->int_no);
+				cprintf("(%x) Divide-by-zero Error", r->int_no);
+				break;
+			case 0x6:
+				qemu_log("(%x) Invalid Opcode", r->int_no);
+				cprintf("(%x) Invalid Opcode", r->int_no);
+				break;
+			case 0x8:
+				qemu_log("(%x) Double Fault Exception", r->int_no);
+				cprintf("(%x) Double Fault Exception", r->int_no);
+				break;
+			case 0xE:
+				qemu_log("(%x) Page Fault Exception", r->int_no);
+				cprintf("(%x) Page Fault Exception", r->int_no);
+				break;
+			default:
+				qemu_log("(%x) Unknown Exception", r->int_no);
+				cprintf("(%x) Unknown Exception", r->int_no);
+				break;
+		}
 		asm("hlt");
 	}
 	__asm__ __volatile__ ("sti");
