@@ -85,6 +85,7 @@ void isrs_init(){
 	idt_set_gate(31, (uint32_t)_isr31, 0x08, 0x8E);
 	idt_set_gate(0x7F, (uint32_t)_isr127, 0x08, 0x8E);
 	if(DEBUG_MODE) log("isr init\n", true);
+	qemu_log("ISR initialized\n");
 }
 
 void fault_handler(struct regs *r){
@@ -100,8 +101,9 @@ void fault_handler(struct regs *r){
 	if (handler) {
 		handler(r);
 	} else {
-        if(DEBUG_MODE) log("error isr ", false);
+        log("error isr ", false);
 		cputint(r->int_no);
+		qemu_log("error isr %d\n", r->int_no);
 		asm("hlt");
 	}
 	__asm__ __volatile__ ("sti");

@@ -2,6 +2,7 @@
 #include <idt.h>
 #include <string.h>
 #include <kernel.h>
+#include <ports.h>
 
 extern void idt_load(struct idt_ptr_struct *idt_ptr_addr);
 
@@ -27,4 +28,5 @@ void idt_init() {
 
 	idt_load(&idt_ptr);
     if(DEBUG_MODE) log("idt init\n", true);
+	qemu_log("IDT initialized\n");
 }

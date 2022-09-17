@@ -67,6 +67,7 @@ void irq_init(){ // setup hardware devices
 	irq_remap();
 	irq_gates();
 	if(DEBUG_MODE) log("irq init\n", true);
+	qemu_log("IRQ initialized\n");
 	__asm__ __volatile__("sti");
 }
 

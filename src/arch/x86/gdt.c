@@ -1,6 +1,7 @@
 #include <gdt.h>
 #include <console.h>
 #include <kernel.h>
+#include <ports.h>
 
 struct gdt_entry_struct gdt_entries[6];
 struct gdt_ptr_struct gdt_ptr;
@@ -30,4 +31,5 @@ void gdt_init() {
     gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);     // user mode data segment
     gdt_flush(&gdt_ptr);
     if(DEBUG_MODE) log("gdt init\n", true);
+    qemu_log("GDT initialized\n");
 }

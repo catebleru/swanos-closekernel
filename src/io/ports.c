@@ -139,12 +139,9 @@ void qemu_printf(char* format, ...){
 void qemu_log(char* format, ...){ 
     va_list arg; 
     va_start(arg, format); 
-	qemu_puts("[LOG] ");
+	qemu_printf("[LOG] (%s:%s:%d) ", __FILE__, __FUNCTION__, __LINE__);
     for(int i = 0; format[i]; i++){
-		if(format[i] == '\n'){
-			qemu_puts("\n[LOG] ");
-		}
-        else if(format[i] == '%'){
+        if(format[i] == '%'){
             i++;
             switch(format[i]) { 
                 case 'c':
