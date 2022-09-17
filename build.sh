@@ -56,7 +56,11 @@ fi
 
 if [ "$1" == "run" ]; then
   if [ -x "$(command -v qemu-system-i386)" ]; then
-    qemu-system-i386 -m 16 -name SwanOS -cdrom swanos-latest.iso -serial file:Qemu.log -soundhw pcspk
+    if [ "$2" == "debug" ]; then
+      qemu-system-i386 -m 512 -name SwanOS -cdrom swanos-latest.iso -monitor stdio -serial file:Qemu.log -soundhw pcspk & gdb iso_root/kernel.elf -ex "target remote localhost:1234" -tui
+    else
+      qemu-system-i386 -m 512 -name SwanOS -cdrom swanos-latest.iso -monitor stdio -serial file:Qemu.log -soundhw pcspk
+    fi
   else
     echo "ERROR: qemu not installed!"
     exit
