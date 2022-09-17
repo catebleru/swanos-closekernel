@@ -1,13 +1,12 @@
 #!/bin/bash
 set -e
 OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/description_tables.o bin/pcspkr.o bin/stdlib.o bin/cmos.o"
+CC=i686-elf-gcc
+AS=i686-elf-as
 for param in "$@"
 do
   if [ "$param" == "llvm" ]; then
     CC="clang -target i386-pc-none-elf"
-    AS=i686-elf-as
-  else
-    CC=i686-elf-gcc
     AS=i686-elf-as
   fi
 done
