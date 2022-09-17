@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-OBJECTS="bin/kernel.o bin/kheap.o bin/paging.o bin/pmm.o bin/vmm.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o bin/pcspkr.o bin/stdlib.o bin/cmos.o"
+OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o bin/pcspkr.o bin/stdlib.o bin/cmos.o"
 CC=i686-elf-gcc
 AS=i686-elf-as
 
@@ -32,11 +32,6 @@ $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/pcspkr.c -o bi
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/cmos.c -o bin/cmos.o
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/keyboard.c -o bin/keyboard.o
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/io/shell.c -o bin/shell.o
-
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/mem/pmm.c -o bin/pmm.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/mem/vmm.c -o bin/vmm.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/mem/kheap.c -o bin/kheap.o
-$AS src/mem/paging.s -o bin/paging.o
 
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/kernel.c -o bin/kernel.o
 
