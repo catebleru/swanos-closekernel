@@ -131,16 +131,9 @@ void shell_init(){
                 if (day < 10) {
                     cputs("0");
                 }
-                cputs(c_day);
-                cputs(" ");
-                cputs(months[month - 1]);
-                cputs(" ");
-                cputs(c_year);
-                cputs("\n");
+                cprintf("%s %s %s\n", c_day, months[month - 1], c_year);
             } else{
-                cputs("\ncommand ");
-                cputs(arg);
-                cputs(" not found");
+                cprintf("\ncommand '%s' not found", arg);
             }
         }
     }
