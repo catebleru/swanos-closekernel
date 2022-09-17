@@ -2,7 +2,7 @@
 
 [![Open Source Helpers](https://www.codetriage.com/holu31/lavellang/badges/users.svg)](https://www.codetriage.com/holu31/swanos)
 ## 🚀 About the project
-**SwanOS** — open and free x86 operating system written in C and GAS that anyone can contribute to.
+**SwanOS** — open and free x86 kernel written in C and GAS that anyone can contribute to.
 
 ## 📱 Contact Us
 - https://vk.com/swanos
