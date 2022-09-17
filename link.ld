@@ -3,7 +3,7 @@ OUTPUT_FORMAT(elf32-i386)
 
 SECTIONS
 {
-    . = 0x00100000;
+    . = 0x00200000;
 
     _kernel_start = .;
         .multiboot.data : {
