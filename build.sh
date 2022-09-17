@@ -1,8 +1,16 @@
 #!/bin/bash
 set -e
 OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/description_tables.o bin/pcspkr.o bin/stdlib.o bin/cmos.o"
-CC=i686-elf-gcc
-AS=i686-elf-as
+for param in "$@"
+do
+  if [ "$param" == "llvm" ]; then
+    CC="clang -target i386-pc-none-elf"
+    AS=i686-elf-as
+  else
+    CC=i686-elf-gcc
+    AS=i686-elf-as
+  fi
+done
 
 if [ ! -x "$(command -v i686-elf-gcc)" ]; then
   echo "ERROR: i686-elf-tools not installed!"
@@ -37,29 +45,32 @@ $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/kernel.c -o bin/kernel
 $AS src/kernel_entry.s -o bin/kernel_entry.o
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -nostdlib -lgcc -T link.ld -o build/boot/kernel.elf $OBJECTS
 
-if [ "$1" == "iso_build" ]; then
-  if [ ! -d "limine" ]; then
-    git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
+for param in "$@"
+do
+  if [ "$param" == "iso_build" ]; then
+    if [ ! -d "limine" ]; then
+      git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
+    fi
+      make -C limine
+      mkdir -p iso_root
+      cp -v build/boot/kernel.elf limine.cfg limine/limine.sys \
+            limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
+
+      xorriso -as mkisofs -b limine-cd.bin \
+              -no-emul-boot -boot-load-size 4 -boot-info-table \
+              --efi-boot limine-cd-efi.bin \
+              -efi-boot-part --efi-boot-image --protective-msdos-label \
+              iso_root -o swanos-latest.iso
+
+      ./limine/limine-deploy swanos-latest.iso
   fi
-    make -C limine
-    mkdir -p iso_root
-    cp -v build/boot/kernel.elf limine.cfg limine/limine.sys \
-          limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
 
-    xorriso -as mkisofs -b limine-cd.bin \
-            -no-emul-boot -boot-load-size 4 -boot-info-table \
-            --efi-boot limine-cd-efi.bin \
-            -efi-boot-part --efi-boot-image --protective-msdos-label \
-            iso_root -o swanos-latest.iso
-
-    ./limine/limine-deploy swanos-latest.iso
-fi
-
-if [ "$1" == "run" ] || [ "$2" == "run" ]; then
-  if [ -x "$(command -v qemu-system-i386)" ]; then
-    qemu-system-i386 -m 512 -name SwanOS -kernel build/boot/kernel.elf -monitor stdio -serial file:Qemu.log -soundhw pcspk
-  else
-    echo "ERROR: qemu not installed!"
-    exit
+  if [ "$param" == "run" ]; then
+    if [ -x "$(command -v qemu-system-i386)" ]; then
+      qemu-system-i386 -m 512 -name SwanOS -kernel build/boot/kernel.elf -monitor stdio -serial file:Qemu.log -soundhw pcspk
+    else
+      echo "ERROR: qemu not installed!"
+      exit
+    fi
   fi
-fi
+done
