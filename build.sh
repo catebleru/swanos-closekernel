@@ -3,6 +3,8 @@ set -e
 OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/description_tables.o bin/pcspkr.o bin/stdlib.o bin/cmos.o"
 CC=i686-elf-gcc
 AS=i686-elf-as
+CFLAGS="-g -I include -ffreestanding -Wall -Wextra -O2 -c"
+
 for param in "$@"
 do
   if [ "$param" == "llvm" ]; then
@@ -20,26 +22,26 @@ if [ ! -x "$(command -v git)" ]; then
   exit
 fi
 
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/io/ports.c -o bin/ports.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/io/console.c -o bin/console.o
+$CC $CFLAGS src/io/ports.c -o bin/ports.o
+$CC $CFLAGS src/io/console.c -o bin/console.o
 
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/libc/string.c -o bin/string.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/libc/stdlib.c -o bin/stdlib.o
+$CC $CFLAGS src/libc/string.c -o bin/string.o
+$CC $CFLAGS src/libc/stdlib.c -o bin/stdlib.o
 
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/arch/x86/gdt.c -o bin/gdt.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/arch/x86/idt.c -o bin/idt.o
+$CC $CFLAGS src/arch/x86/gdt.c -o bin/gdt.o
+$CC $CFLAGS src/arch/x86/idt.c -o bin/idt.o
 $AS src/arch/x86/description_tables.s -o bin/description_tables.o
 
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/interrupts/irq.c -o bin/irq.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/interrupts/isr.c -o bin/isr.o
+$CC $CFLAGS -c src/interrupts/irq.c -o bin/irq.o
+$CC $CFLAGS -c src/interrupts/isr.c -o bin/isr.o
 nasm src/interrupts/interrupts.asm -f elf32 -O0 -o bin/interrupts.o
 
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/pci.c -o bin/pci.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/pcspkr.c -o bin/pcspkr.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/cmos.c -o bin/cmos.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/keyboard.c -o bin/keyboard.o
+$CC $CFLAGS -c src/drivers/pci.c -o bin/pci.o
+$CC $CFLAGS -c src/drivers/pcspkr.c -o bin/pcspkr.o
+$CC $CFLAGS -c src/drivers/cmos.c -o bin/cmos.o
+$CC $CFLAGS -c src/drivers/keyboard.c -o bin/keyboard.o
 
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/kernel.c -o bin/kernel.o
+$CC $CFLAGS src/kernel.c -o bin/kernel.o
 
 $AS src/kernel_entry.s -o bin/kernel_entry.o
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -nostdlib -lgcc -T link.ld -o build/boot/kernel.elf $OBJECTS
