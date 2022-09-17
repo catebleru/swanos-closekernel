@@ -1,6 +1,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+
+#define SCREEN_WIDTH 80
+#define SCREEN_HEIGHT 25
  
 enum colors {
     COLOR_BLACK = 0,

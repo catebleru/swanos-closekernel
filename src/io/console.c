@@ -7,7 +7,7 @@ static uint16_t* buffer;
 
 
 void update_cursor(){
-    uint16_t pos = row * 80 + column;
+    uint16_t pos = row * SCREEN_WIDTH + column;
  
     outb(0x3D4, 0x0F);
     outb(0x3D5, (uint8_t) (pos & 0xFF));
@@ -26,9 +26,9 @@ void cinit(void) {
     column = 0;
     color = COLOR_LIGHT_GREY | COLOR_BLACK << 4;
     buffer = (uint16_t*) 0xC03FF000;
-    for (size_t y = 0; y < 25; y++){
-        for (size_t x = 0; x < 80; x++){
-            const size_t index = y * 80 + x;
+    for (size_t y = 0; y < SCREEN_HEIGHT; y++){
+        for (size_t x = 0; x < SCREEN_WIDTH; x++){
+            const size_t index = y * SCREEN_WIDTH + x;
             buffer[index] = (uint16_t) ' ' | (uint16_t) color << 8;
         }
     }
@@ -37,12 +37,12 @@ void cinit(void) {
 
 void video_scroll() {
     if (row > 24){
-        for (int i = 0*80; i < 24*80; i++) {
-            buffer[i] = buffer[i + 80];
+        for (int i = 0*SCREEN_WIDTH; i < 24*SCREEN_WIDTH; i++) {
+            buffer[i] = buffer[i + SCREEN_WIDTH];
         }
         // The last line should now be blank. Do this by writing
         // 80 spaces to it.
-        for (int i = 24 * 80; i < 25 * 80; i++) {
+        for (int i = 24 * SCREEN_WIDTH; i < SCREEN_HEIGHT * SCREEN_WIDTH; i++) {
             buffer[i] = (uint16_t) ' ' | (uint16_t) color << 8;
         }
         // The cursor should now be on the last line.
@@ -53,11 +53,11 @@ void video_scroll() {
 
 
 void cputch(char c){
-    const size_t index = row * 80 + column;
+    const size_t index = row * SCREEN_WIDTH + column;
     if(c != '\n') buffer[index] = (uint16_t) c | (uint16_t) color << 8;
-    if (++column == 80 || c == '\n') {
+    if (++column == SCREEN_WIDTH || c == '\n') {
         column = 0;
-        if (++row >= 25){
+        if (++row >= SCREEN_HEIGHT){
 			video_scroll();
         }
     }
@@ -117,13 +117,12 @@ void cputhex(uint32_t i){
 
 void cbackspace(){
     column -= 1;
-    const size_t index = row * 80 + column;
+    const size_t index = row * SCREEN_WIDTH + column;
     buffer[index] = (uint16_t) ' ' | (uint16_t) color << 8;
     cputch(' ');
     column -= 1;
     update_cursor();
 }
-
 
 void log(char *str, bool ok){
     cputs("[");

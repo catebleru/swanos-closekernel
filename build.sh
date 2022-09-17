@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o bin/pcspkr.o bin/stdlib.o bin/cmos.o"
+OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/description_tables.o bin/pcspkr.o bin/stdlib.o bin/cmos.o"
 CC=i686-elf-gcc
 AS=i686-elf-as
 
@@ -31,7 +31,6 @@ $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/pci.c -o bin/p
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/pcspkr.c -o bin/pcspkr.o
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/cmos.c -o bin/cmos.o
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/keyboard.c -o bin/keyboard.o
-$CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/io/shell.c -o bin/shell.o
 
 $CC -g -I include -ffreestanding -Wall -Wextra -O2 -c src/kernel.c -o bin/kernel.o
 
