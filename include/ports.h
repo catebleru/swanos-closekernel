@@ -2,6 +2,7 @@
 #define PORTS_H
 
 #include <stdint.h>
+#include <stdarg.h>
 
 #define PORT_COM1 0x3f8
 
@@ -16,5 +17,13 @@ void insl(unsigned short port, unsigned int buffer, unsigned long count);//read 
 
 void io_wait(void);
 void sleep(int32_t i);
+
+int32_t com1_is_transmit_empty();
+void com1_write_char(char a);
+void qemu_puts(char *c);
+void qemu_putint(int i);
+void qemu_puthex(uint32_t i);
+void qemu_printf(char* format, ...);
+void qemu_log(char* format, ...);
 
 #endif
