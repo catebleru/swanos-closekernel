@@ -68,7 +68,7 @@ do
 
   if [ "$param" == "run" ]; then
     if [ -x "$(command -v qemu-system-i386)" ]; then
-      qemu-system-i386 -m 512 -name SwanOS -kernel build/boot/kernel.elf -monitor stdio -serial file:Qemu.log -soundhw pcspk
+      qemu-system-i386 -m 64M -name SwanOS -kernel build/boot/kernel.elf -monitor stdio -serial file:Qemu.log -soundhw pcspk
     else
       echo "ERROR: qemu not installed!"
       exit
