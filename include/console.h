@@ -23,10 +23,6 @@ enum colors {
     COLOR_LIGHT_YELLOW = 14,
     COLOR_WHITE = 15,
 };
- 
-size_t row;
-size_t column;
-uint8_t color;
 
 void cinit(void);
 void cputch(char c);

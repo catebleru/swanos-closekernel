@@ -3,6 +3,9 @@
 #include <stdarg.h> 
 
 
+size_t row;
+size_t column;
+uint8_t color;
 static uint16_t* buffer;
 
 
