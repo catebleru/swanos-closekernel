@@ -6,11 +6,12 @@
 #include <kernel.h>
 #include <ports.h>
 
-void kernel_main(struct multiboot_info *mboot_info){
-	qemu_log("Multiboot magic number - %x\n", mboot_info);
+void kernel_main(uint32_t magic_number, multiboot_info_t* mboot_info){
+	qemu_log("Multiboot magic number - %x\n", magic_number);
 	cinit();
 	gdt_init();
 	idt_init();
 	irq_init();
 	isrs_init();
+	qemu_putint(mboot_info->flags);
 }
