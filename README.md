@@ -1,9 +1,9 @@
 ![mockup](https://user-images.githubusercontent.com/93409280/188922054-920111d6-33c7-47fa-be67-7e7f82cd88fe.png)
 
-[![Open Source Helpers](https://www.codetriage.com/holu31/lavellang/badges/users.svg)](https://www.codetriage.com/holu31/swanos)
 ## 🚀 About the project
-**SwanOS** — open and free x86 kernel written in C and GAS that anyone can contribute to.
+**SwanOS** — SwanOS - monolithic operating system created in collaboration with PaShop.
+The OS is closed and only the first version will be released to the public on Github.
 
 ## 📱 Contact Us
-- https://vk.com/swanos
+- https://swan-os.ru
 - swanos.info@gmail.com
