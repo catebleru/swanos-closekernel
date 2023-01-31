@@ -1,7 +1,4 @@
-.DS_Store
-Qemu.log
+serial.log
 bin/*.o
-limine/
-iso_root/
-build/boot/kernel.elf
-swanos-latest.iso
+kernel.elf
+latest.iso
